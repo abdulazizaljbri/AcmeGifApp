@@ -18,8 +18,8 @@ class TenorResponseResource extends JsonResource
         return [
             "id"=>$this->resource["id"],
             "title"=>$this->resource["title"]??"",
-            "short-url"=>$this->resource["url"],
- 
+            "short_url"=>$this->resource["url"],
+
             "media"=>[
                 "thumbnail_url"=>$this->resource["media"][0]["mediumgif"]["preview"],
                 "image_url"=>$this->resource["media"][0]["mediumgif"]["url"],

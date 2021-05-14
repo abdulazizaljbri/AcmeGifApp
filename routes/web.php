@@ -1,6 +1,6 @@
 <?php
 
- 
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 /*
@@ -20,7 +20,9 @@ use Inertia\Inertia;
 
 Route::group(['middleware' =>  ['auth:sanctum']], function () {
 
-    Route::get('/', function () {
-        return Inertia::render('Index');
-    })->name("dashboard");
+    Route::get('/',"AcmeGifController@index")->name("dashboard");
+    Route::get('/giphy',"AcmeGifController@giphy")->name("giphy");
+    Route::get('/tenor',"AcmeGifController@tenor")->name("tenor");
+
+
 });

@@ -1,5 +1,5 @@
 <?php
-$GIFLimit = 20;
+$GIFLimit = 9;
 
 return [
 
@@ -43,7 +43,7 @@ return [
             ]
 
 
-            // "key" => env('GIPHY_KEY', "IQK4SYDXXA5ol5Is0z3KtSFKpvEBVGwO"),
+
         ],
         "tenor" => [
             "url" => env('TENOR_URL', "https://g.tenor.com/v1/"),

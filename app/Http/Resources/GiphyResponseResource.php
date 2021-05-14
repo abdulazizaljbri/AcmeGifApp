@@ -19,8 +19,8 @@ class GiphyResponseResource extends JsonResource
         return [
             "id"=>$this->resource["id"],
             "title"=>$this->resource["title"],
-            "short-url"=>$this->resource["url"],
-         
+            "short_url"=>$this->resource["url"],
+
             "media"=>[
                 "thumbnail_url"=>$this->resource["images"]["original_still"]["url"],
                 "image_url"=>$this->resource["images"]["original"]["url"],

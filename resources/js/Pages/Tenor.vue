@@ -1,66 +1,11 @@
 <template>
   <v-container>
     <v-row class="my-10" align="center" justify="center">
-      <v-col cols="12" shaped v-if="giphy">
-        <v-card width="100%" color="transparent">
-          <v-card-title class="primary white--text justify-center">
-            Giphy Api
-          </v-card-title>
-          <v-card-text class="pa-8">
-            <v-row>
-              <v-col
-                v-for="gif in giphyData"
-                :key="gif.id"
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-card
-                  height="360"
-                  shaped
-                  link
-                  class="d-flex flex-column pb-3"
-                >
-                   <v-img
-                    @click.prevent="switchImage(gif)"
-                    :src="gif.media.thumbnail_url"
-                    :ref="gif.id"
-                    width="100%"
-                    height="200px"
-                  />
 
-                  <v-card-actions
-                    class="d-flex flex-column"
-                    style="height: 100px"
-                  >
-                    <v-card-title class="cardAction">{{
-                      gif.title
-                    }}</v-card-title>
-
-                    <a
-                      class="v-btn cardAction mt-1 v-btn--flat v-btn--text"
-                      :href="gif.short_url"
-                      target="_blank"
-                      style="font-size: 12px !important"
-                    >
-                      see this image on giphy
-                    </a>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions class="primary white--text justify-center pa-5">
-            See More
-          </v-card-actions>
-        </v-card>
-      </v-col>
 
     <v-col cols="12" shaped v-if="tenor">
         <v-card width="100%" color="transparent">
-          <v-card-title class="primary white--text justify-center">
-            Tenor Api
-          </v-card-title>
+          
           <v-card-text class="pa-8">
             <v-row>
               <v-col
@@ -121,7 +66,7 @@
 import AppLayout from "@/Layouts/Layout";
 export default {
   layout: AppLayout,
-  props: ["giphy", "tenor"],
+  props: [ "tenor"],
   metaInfo() {
     return {
       title: this.pageTitle,
@@ -130,8 +75,8 @@ export default {
 
   data() {
     return {
-      pageTitle: "AcmeGif",
-      giphyData: this.giphy,
+      pageTitle: "AcmeGif Tenor",
+
       tenorData: this.tenor,
     };
   },
