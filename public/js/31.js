@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[31],{1031:(t,e,n)=>{"use strict";n.r(e),n.d(e,{default:()=>r});const l={props:{title:{type:String,default:""},href:{type:String,default:"/"},method:{type:String,default:"get"}}};const r=(0,n(1900).Z)(l,(function(){var t=this,e=t.$createElement;return(t._self._c||e)("inertia-link",{staticClass:"v-btn v-btn--flat v-btn--text",attrs:{href:t.href,method:t.method}},[t._t("default",[t._v("\n    "+t._s(t.title)+"\n  ")])],2)}),[],!1,null,null,null).exports}}]);
+//# sourceMappingURL=31.js.map
