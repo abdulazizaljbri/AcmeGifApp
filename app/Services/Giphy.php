@@ -30,7 +30,22 @@ class Giphy implements IGIF
     public   function trending($options = [])
     {
 
-        $this->formaGiftUrl->bulidUrl( "trending", $options);
+
+        $this->formaGiftUrl->bulidUrl("trending", $options);
+        $giphy = $this->getData();
+
+        $data = $giphy["data"];
+
+ 
+        $data = array_map(fn ($value) => (new  GiphyResponseResource($value))->resolve(), $data);
+
+        $next=$giphy["pagination"]["count"]+$giphy["pagination"]["offset"];
+        $next=$next < $giphy["pagination"]["total_count"]?$next:null;
+
+        return ["data" => $data, "next" => $next];
+
+
+     
 
 
         $data=$this->getData()["data"];

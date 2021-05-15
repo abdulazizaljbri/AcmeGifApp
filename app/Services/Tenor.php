@@ -15,36 +15,35 @@ class Tenor implements IGIF
     public function __construct()
     {
 
-        $this->formaGiftUrl=new FormatGifUrl($this);
+        $this->formaGiftUrl = new FormatGifUrl($this);
     }
 
 
     public   function trending($options = [])
     {
 
-        $this->formaGiftUrl->bulidUrl( "trending", $options);
+        $this->formaGiftUrl->bulidUrl("trending", $options);
+        $tenor = $this->getData();
 
-        $data=$this->getData()["results"];
+        $data = $tenor["results"];
 
-        $data= array_map(fn($value)=>(new  TenorResponseResource($value))->resolve()  ,$data);
-
-
+        $data = array_map(fn ($value) => (new  TenorResponseResource($value))->resolve(), $data);
 
 
-        return $data;
 
+
+        return ["data" => $data, "next" => $tenor["next"]];
     }
     public  function search($options = [])
     {
-        $this->formaGiftUrl->bulidUrl( "search", $options);
-        $data=$this->getData()["results"];
+        $this->formaGiftUrl->bulidUrl("search", $options);
+        $data = $this->getData()["results"];
 
-        $data= array_map(fn($value)=>(new  TenorResponseResource($value))->resolve()  ,$data);
+        $data = array_map(fn ($value) => (new  TenorResponseResource($value))->resolve(), $data);
 
 
 
         return $data;
-
     }
 
     function autoComplete($options = [])
@@ -52,17 +51,17 @@ class Tenor implements IGIF
         $this->formaGiftUrl->bulidUrl("autocomplete", $options);
 
 
-        $data=$this->getData()["results"];
+        $data = $this->getData()["results"];
 
 
         return  $data;
     }
 
-    function getData(){
-        $res= HttpRequest::get($this->formaGiftUrl->getUrl());
+    function getData()
+    {
+        $res = HttpRequest::get($this->formaGiftUrl->getUrl());
 
 
-      return $res ;
+        return $res;
     }
-
 }

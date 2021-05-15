@@ -5,7 +5,7 @@
 
     <v-col cols="12" shaped v-if="tenor">
         <v-card width="100%" color="transparent">
-          
+
           <v-card-text class="pa-8">
             <v-row>
               <v-col
@@ -50,10 +50,10 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions class="primary white--text justify-center pa-5">
-            <c-inertia-link :href="route('tenor')" class=" white--text" method="get" >
-                See More
-            </c-inertia-link>
+         <v-card-actions class="primary white--text justify-center pa-5"  @click="loadMore" style="cursor: pointer;" >
+            <v-btn text :loading="loading" class=" white--text" >
+                Load More 
+            </v-btn>
 
           </v-card-actions>
         </v-card>
@@ -77,7 +77,9 @@ export default {
     return {
       pageTitle: "AcmeGif Tenor",
 
-      tenorData: this.tenor,
+      tenorData: this.tenor.data,
+      next: this.tenor.next,
+      loading:false
     };
   },
   methods: {
@@ -86,6 +88,17 @@ export default {
 
 
     },
+    
+    async loadMore(){
+               this.loading=true;
+     await axios.get("/tenor?pos="+this.next).then(res=>{
+                this.loading=false;
+           
+           this.tenorData.push(...res.data.data)
+            this.next=res.data.next
+           
+        })
+    }
   },
 };
 </script>

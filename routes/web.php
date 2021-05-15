@@ -25,4 +25,5 @@ Route::group(['middleware' =>  ['auth:sanctum']], function () {
     Route::get('/tenor',"AcmeGifController@tenor")->name("tenor");
 
 
+
 });

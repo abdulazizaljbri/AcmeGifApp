@@ -50,8 +50,12 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions class="primary white--text justify-center pa-5">
-            See More
+           <v-card-actions class="primary white--text justify-center pa-5">
+            <c-inertia-link :href="route('giphy')"  class=" white--text" method="get" >
+                See More
+            </c-inertia-link>
+
+
           </v-card-actions>
         </v-card>
       </v-col>
@@ -106,9 +110,10 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="primary white--text justify-center pa-5">
-            <c-inertia-link :href="route('tenor')" class=" white--text" method="get" >
+            <c-inertia-link :href="route('tenor')"  class=" white--text" method="get" >
                 See More
             </c-inertia-link>
+
 
           </v-card-actions>
         </v-card>
@@ -131,8 +136,8 @@ export default {
   data() {
     return {
       pageTitle: "AcmeGif",
-      giphyData: this.giphy,
-      tenorData: this.tenor,
+      giphyData: this.giphy.data,
+      tenorData: this.tenor.data,
     };
   },
   methods: {
@@ -141,6 +146,7 @@ export default {
 
 
     },
+
   },
 };
 </script>

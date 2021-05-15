@@ -48,8 +48,11 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions class="primary white--text justify-center pa-5">
-            See More
+           <v-card-actions class="primary white--text justify-center pa-5"  @click="loadMore" style="cursor: pointer;" >
+            <v-btn text :loading="loading" class=" white--text" >
+                Load More 
+            </v-btn>
+
           </v-card-actions>
         </v-card>
       </v-col>
@@ -73,7 +76,9 @@ export default {
   data() {
     return {
       pageTitle: "AcmeGif Giphy",
-      giphyData: this.giphy,
+      giphyData: this.giphy.data,
+         next: this.giphy.next,
+         loading:false,
 
     };
   },
@@ -83,6 +88,18 @@ export default {
 
 
     },
+
+    async loadMore(){
+        this.loading=true;
+     await axios.get("/giphy?offset="+this.next).then(res=>{
+         
+        this.loading=false;
+           
+           this.giphyData.push(...res.data.data)
+            this.next=res.data.next
+           
+        })
+    }
   },
 };
 </script>

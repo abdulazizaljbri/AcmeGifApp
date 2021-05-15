@@ -25,14 +25,22 @@ class AcmeGifController extends Controller
     public function giphy()
     {
         $giphy = new Giphy();
-        $giphyData = $giphy->trending();
-        return Inertia::render("Index", ["giphy" => $giphyData]);
+
+
+        if (request()->wantsJson()) {
+
+            return  $giphy->trending(request()->query);
+        }
+        return Inertia::render("Giphy", ["giphy" =>  $giphy->trending()]);
     }
     public function tenor()
     {
         $tenor = new Tenor();
-        $tenorData = $tenor->trending();
-         
-        return Inertia::render("Index", ["tenor" => $tenorData]);
+
+        if (request()->wantsJson()) {
+
+            return  $tenor->trending(request()->query);
+        }
+        return Inertia::render("Tenor", ["tenor" => $tenor->trending()]);
     }
 }
