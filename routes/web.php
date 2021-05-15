@@ -22,7 +22,9 @@ Route::group(['middleware' =>  ['auth:sanctum']], function () {
 
     Route::get('/',"AcmeGifController@index")->name("dashboard");
     Route::get('/giphy',"AcmeGifController@giphy")->name("giphy");
+    Route::get('/giphy/search',"AcmeGifController@giphySearch")->name("searchgiphy");
     Route::get('/tenor',"AcmeGifController@tenor")->name("tenor");
+    Route::get('/tenor/search',"AcmeGifController@tenorSearch")->name("searchtenor");
 
 
 

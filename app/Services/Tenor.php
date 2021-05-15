@@ -37,13 +37,16 @@ class Tenor implements IGIF
     public  function search($options = [])
     {
         $this->formaGiftUrl->bulidUrl("search", $options);
-        $data = $this->getData()["results"];
+        $tenor = $this->getData();
+        $data = $tenor["results"];
+        
 
         $data = array_map(fn ($value) => (new  TenorResponseResource($value))->resolve(), $data);
 
 
 
-        return $data;
+        
+        return ["data" => $data, "next" => $tenor["next"]];
     }
 
     function autoComplete($options = [])

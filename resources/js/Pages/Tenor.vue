@@ -1,11 +1,9 @@
 <template>
   <v-container>
     <v-row class="my-10" align="center" justify="center">
-
-
-    <v-col cols="12" shaped v-if="tenor">
+      <v-col cols="12" shaped>
+        <c-text-field name="search" clearable v-model="search" label="search" />
         <v-card width="100%" color="transparent">
-
           <v-card-text class="pa-8">
             <v-row>
               <v-col
@@ -50,11 +48,15 @@
               </v-col>
             </v-row>
           </v-card-text>
-         <v-card-actions class="primary white--text justify-center pa-5"  @click="loadMore" style="cursor: pointer;" >
-            <v-btn text :loading="loading" class=" white--text" >
-                Load More 
+          <v-card-actions
+            class="primary white--text justify-center pa-5"
+            @click="loadMore"
+            v-if="!search"
+            style="cursor: pointer"
+          >
+            <v-btn text :loading="loading" class="white--text">
+              Load More
             </v-btn>
-
           </v-card-actions>
         </v-card>
       </v-col>
@@ -64,13 +66,22 @@
 
 <script>
 import AppLayout from "@/Layouts/Layout";
+import { debounce } from "lodash/function";
 export default {
   layout: AppLayout,
-  props: [ "tenor"],
+  props: ["tenor"],
   metaInfo() {
     return {
       title: this.pageTitle,
     };
+  },
+  watch: {
+    search: {
+      handler: debounce(function () {
+        this.searchData();
+      }, 1000),
+      deep: true,
+    },
   },
 
   data() {
@@ -79,26 +90,38 @@ export default {
 
       tenorData: this.tenor.data,
       next: this.tenor.next,
-      loading:false
+      loading: false,
+      search: "",
     };
   },
   methods: {
     switchImage(gif) {
       this.$refs[gif.id][0].src = gif.media.image_url;
-
-
     },
-    
-    async loadMore(){
-               this.loading=true;
-     await axios.get("/tenor?pos="+this.next).then(res=>{
-                this.loading=false;
-           
-           this.tenorData.push(...res.data.data)
-            this.next=res.data.next
-           
-        })
-    }
+
+    async loadMore(next = null) {
+      this.loading = true;
+      let nextPage = next == null ? "" : this.next;
+      await axios.get("/tenor?pos=" + nextPage).then((res) => {
+        this.loading = false;
+
+        this.tenorData.push(...res.data.data);
+        this.next = res.data.next;
+      });
+    },
+    async searchData() {
+      if (this.search) {
+        await axios.get("/tenor/search?q=" + this.search).then((res) => {
+          this.loading = false;
+
+          this.tenorData = res.data.data;
+          this.next = res.data.next;
+        });
+      } else {
+        this.tenorData = [];
+        this.loadMore(null);
+      }
+    },
   },
 };
 </script>

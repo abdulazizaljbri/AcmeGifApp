@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-row class="my-10" align="center" justify="center">
-      <v-col cols="12" shaped v-if="giphy">
+      <v-col cols="12" shaped>
+        <c-text-field name="search" clearable v-model="search" label="search" />
         <v-card width="100%" color="transparent">
-           
           <v-card-text class="pa-8">
             <v-row>
               <v-col
@@ -19,7 +19,7 @@
                   link
                   class="d-flex flex-column pb-3"
                 >
-                    <v-img
+                  <v-img
                     @click.prevent="switchImage(gif)"
                     :src="gif.media.thumbnail_url"
                     :ref="gif.id"
@@ -48,22 +48,25 @@
               </v-col>
             </v-row>
           </v-card-text>
-           <v-card-actions class="primary white--text justify-center pa-5"  @click="loadMore" style="cursor: pointer;" >
-            <v-btn text :loading="loading" class=" white--text" >
-                Load More 
+          <v-card-actions
+            class="primary white--text justify-center pa-5"
+            @click="loadMore"
+            style="cursor: pointer"
+            v-if="!search"
+          >
+            <v-btn text :loading="loading" class="white--text">
+              Load More
             </v-btn>
-
           </v-card-actions>
         </v-card>
       </v-col>
-
-
     </v-row>
   </v-container>
 </template>
 
 <script>
 import AppLayout from "@/Layouts/Layout";
+import { debounce } from "lodash/function";
 export default {
   layout: AppLayout,
   props: ["giphy"],
@@ -72,34 +75,52 @@ export default {
       title: this.pageTitle,
     };
   },
+  watch: {
+    search: {
+      handler: debounce(function () {
+        this.searchData();
+      }, 1000),
+      deep: true,
+    },
+  },
 
   data() {
     return {
       pageTitle: "AcmeGif Giphy",
       giphyData: this.giphy.data,
-         next: this.giphy.next,
-         loading:false,
-
+      next: this.giphy.next,
+      loading: false,
+      search: "",
     };
   },
   methods: {
     switchImage(gif) {
       this.$refs[gif.id][0].src = gif.media.image_url;
-
-
     },
 
-    async loadMore(){
-        this.loading=true;
-     await axios.get("/giphy?offset="+this.next).then(res=>{
-         
-        this.loading=false;
-           
-           this.giphyData.push(...res.data.data)
-            this.next=res.data.next
-           
-        })
-    }
+    async loadMore(next = null) {
+      this.loading = true;
+      let nextPage = next == null ? 0 : this.next;
+      await axios.get("/giphy?offset=" + nextPage).then((res) => {
+        this.loading = false;
+
+        this.giphyData.push(...res.data.data);
+        this.next = res.data.next;
+      });
+    },
+    async searchData() {
+      if (this.search) {
+        await axios.get("/giphy/search?q=" + this.search).then((res) => {
+          this.loading = false;
+
+          this.giphyData = res.data.data;
+          this.next = res.data.next;
+        });
+      } else {
+        this.giphyData = [];
+        this.loadMore(null);
+      }
+    },
   },
 };
 </script>

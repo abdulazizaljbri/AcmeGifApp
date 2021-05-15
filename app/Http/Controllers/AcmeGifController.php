@@ -33,6 +33,17 @@ class AcmeGifController extends Controller
         }
         return Inertia::render("Giphy", ["giphy" =>  $giphy->trending()]);
     }
+    public function giphySearch()
+    {
+        $giphy = new Giphy();
+
+
+        if (request()->wantsJson()) {
+
+            return  $giphy->search(request()->query);
+        }
+        return Inertia::render("Giphy", ["giphy" =>  $giphy->trending()]);
+    }
     public function tenor()
     {
         $tenor = new Tenor();
@@ -40,6 +51,16 @@ class AcmeGifController extends Controller
         if (request()->wantsJson()) {
 
             return  $tenor->trending(request()->query);
+        }
+        return Inertia::render("Tenor", ["tenor" => $tenor->trending()]);
+    }
+    public function tenorSearch()
+    {
+        $tenor = new Tenor();
+
+        if (request()->wantsJson()) {
+
+            return  $tenor->search(request()->query);
         }
         return Inertia::render("Tenor", ["tenor" => $tenor->trending()]);
     }

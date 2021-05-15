@@ -44,28 +44,22 @@ class Giphy implements IGIF
 
         return ["data" => $data, "next" => $next];
 
-
-     
-
-
-        $data=$this->getData()["data"];
-
-        $data= array_map(fn($value)=>(new  GiphyResponseResource($value))->resolve()  ,$data);
-
-
-      return  $data;
     }
     public  function search($options = [])
     {
         $this->formaGiftUrl->bulidUrl("search", $options);
-        $data=$this->getData()["data"];
+        $giphy = $this->getData();
+        $data = $giphy["data"];
+         
+        $data = array_map(fn ($value) => (new  GiphyResponseResource($value))->resolve(), $data);
 
-        $data= array_map(fn($value)=>(new  GiphyResponseResource($value))->resolve()  ,$data);
+        $next=$giphy["pagination"]["count"]+$giphy["pagination"]["offset"];
+        $next=$next < $giphy["pagination"]["total_count"]?$next:null;
 
 
+        return ["data" => $data, "next" => $next];
 
-
-        return $data;
+       
     }
     function autoComplete($options = [])
     {
